@@ -95,3 +95,38 @@ var observersFunc = addBootstrapCheckboxObservers().elementIds(<myIds>)
 // observersFunc returns a Checkbox object that can be used to get checked values
 var boxes = observersFunc();
 ```
+## Electron
+There are two main components that are required to run electron: a main.js and the electron dependency included in the package.json file.
+### package.json
+Included under devDependencies is electron. This should be automatically added with the initial ```npm install``` command. 
+
+To run the electron app: ```npm start```
+
+### main.js
+This file is how the electron app can communicate with the native OS on the device. It will create a new window with a built-in menu and it will display whatever file path is loaded into the ([BrowserWindow](https://github.com/electron/electron/blob/master/docs/api/browser-window.md)) URL. In this case it is index.html, which is in the same directory as the main.js file.
+
+```javascript
+const electron = require('electron')
+// Module to control application life.
+const app = electron.app
+// Module to create native browser window.
+const BrowserWindow = electron.BrowserWindow
+
+const path = require('path')
+const url = require('url')
+
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+let mainWindow
+
+function createWindow () {
+  // Create the browser window.
+  mainWindow = new BrowserWindow({width: 800, height: 600})
+
+  // and load the index.html of the app.
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+```
